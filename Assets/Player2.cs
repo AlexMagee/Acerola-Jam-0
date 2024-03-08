@@ -26,13 +26,13 @@ public class Player2 : MonoBehaviour
         {
             grabbedItem = grabTargets[0];
             grabbedItem.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-            grabbedItem.GetComponent<Collider2D>().enabled = false;
+            grabbedItem.layer = LayerMask.NameToLayer("Carrying");
             grabbedItem.transform.parent = transform.GetChild(0);
             grabTargets.Remove(grabbedItem);
         } else if(grabbedItem != null && context.performed)
         {
             grabbedItem.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-            grabbedItem.GetComponent<Collider2D>().enabled = true;
+            grabbedItem.layer = LayerMask.NameToLayer("Default");
             grabbedItem.transform.parent = null;
             grabbedItem = null;
         }
@@ -51,7 +51,10 @@ public class Player2 : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        grabTargets.Add(col.gameObject);
+        if(col.gameObject.GetComponent<Robot>() == null)
+        {
+            grabTargets.Add(col.gameObject);
+        }
     }
 
     void OnTriggerExit2D(Collider2D col)
