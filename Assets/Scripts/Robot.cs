@@ -7,10 +7,15 @@ public class Robot : MonoBehaviour
 {
     [SerializeField]
     public float speed;
+    public bool isGameRobot = false;
     private Rigidbody2D _rigidbody;
     private SpriteRenderer _holdRenderer;
+    private Animator _animator;
+    private GameManager manager;
 
     private bool travel = true;
+    private float timer = -1;
+    private bool interrupt = false;
 
     public enum stateTypes
     {
@@ -41,6 +46,12 @@ public class Robot : MonoBehaviour
         _holdRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         if (_holdRenderer is null)
             Debug.LogError("SpriteRenderer is NULL!");
+
+        _animator = transform.GetComponent<Animator>();
+        if (_animator is null)
+            Debug.LogError("Animator is NULL!");
+
+        manager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
     }
 
     void FixedUpdate()
@@ -60,15 +71,47 @@ public class Robot : MonoBehaviour
                     _rigidbody.velocity = normalizedDirection * speed;
                 break;
             case stateTypes.Grab:
-                _holdRenderer.enabled = true;
-                TransitionState();
+                if(interrupt && timer > 0.25)
+                {
+                    RevertState();
+                    break;
+                }
+                if(timer == -1)
+                {
+                    timer = 1;
+                } else if(timer < 0.25 && _holdRenderer.enabled == false)
+                {
+                    _holdRenderer.enabled = true;
+                }
+                timer -= Time.fixedDeltaTime;
+                if(timer <= 0)
+                {
+                    TransitionState();
+                    timer = -1;
+                }
                 break;
             case stateTypes.Drop:
-                _holdRenderer.enabled = false;
-                TransitionState();
+                if(interrupt && timer > 0.25)
+                {
+                    RevertState();
+                    break;
+                }
+                if(timer == -1)
+                {
+                    timer = 1;
+                } else if(timer < 0.25 && _holdRenderer.enabled == true)
+                {
+                    _holdRenderer.enabled = false;
+                }
+                timer -= Time.fixedDeltaTime;
+                if(timer <= 0)
+                {
+                    TransitionState();
+                    timer = -1;
+                }
                 break;
         }
-        
+        _animator.SetFloat("velocity_y", _rigidbody.velocity.y);
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -81,17 +124,40 @@ public class Robot : MonoBehaviour
                     TransitionState();
                     break;
             }
-            
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D col)
+    {
+        if(col.transform.Equals(states[state].target))
+        {
+            interrupt = true;
         }
     }
 
     void TransitionState()
     {
+        interrupt = false;
         state++;
         if(state > states.Length - 1)
         {
-            Debug.Log(gameObject.name + " completed a cycle");
+            if(isGameRobot)
+            {
+                Debug.Log(gameObject.name + " completed a cycle");
+                manager.IncrementCycle();
+            }
             state = 0;
+        }
+    }
+
+    void RevertState()
+    {
+        interrupt = false;
+        timer = -1;
+        state--;
+        if(state < 0)
+        {
+            state = states.Length - 1;
         }
     }
 }

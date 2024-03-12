@@ -29,7 +29,8 @@ public class Player2 : MonoBehaviour
             grabbedItem.layer = LayerMask.NameToLayer("Carrying");
             grabbedItem.transform.parent = transform.GetChild(0);
             grabTargets.Remove(grabbedItem);
-        } else if(grabbedItem != null && context.performed)
+        }
+        else if(grabbedItem != null && context.performed)
         {
             grabbedItem.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
             grabbedItem.layer = LayerMask.NameToLayer("Default");

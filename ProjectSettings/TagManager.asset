@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Source
   - Repo
+  - Button
+  - GameManager
   layers:
   - Default
   - TransparentFX
@@ -13,7 +15,7 @@ TagManager:
   - Carrying
   - Water
   - UI
-  - 
+  - CarryIgnore
   - 
   - 
   - 
