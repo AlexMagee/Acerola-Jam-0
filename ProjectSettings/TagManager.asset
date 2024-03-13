@@ -8,6 +8,9 @@ TagManager:
   - Repo
   - Button
   - GameManager
+  - Distraction
+  - Safe Area
+  - OffDistraction
   layers:
   - Default
   - TransparentFX

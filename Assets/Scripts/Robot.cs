@@ -12,6 +12,7 @@ public class Robot : MonoBehaviour
     private SpriteRenderer _holdRenderer;
     private Animator _animator;
     private GameManager manager;
+    private GameObject distraction;
 
     private bool travel = true;
     private float timer = -1;
@@ -59,6 +60,25 @@ public class Robot : MonoBehaviour
         Vector2 direction = states[state].target.position - transform.position;
         Vector2 normalizedDirection = direction;
         normalizedDirection.Normalize();
+        if(distraction is null)
+        {
+            Debug.Log("Distraction is null");
+        }
+        else
+        {
+            if(isGameRobot)
+            {
+                direction = distraction.transform.position - transform.position;
+                normalizedDirection = direction;
+                normalizedDirection.Normalize();
+                if(direction.magnitude > 0.25f)
+                {
+                    _rigidbody.velocity = normalizedDirection * speed;
+                    _animator.SetFloat("velocity_y", _rigidbody.velocity.y);
+                }  
+                return; 
+            }
+        }
         switch (states[state].type)
         {
             case stateTypes.Find:
@@ -112,6 +132,8 @@ public class Robot : MonoBehaviour
                 break;
         }
         _animator.SetFloat("velocity_y", _rigidbody.velocity.y);
+
+        distraction = GameObject.FindWithTag("Distraction");
     }
 
     void OnTriggerEnter2D(Collider2D col)
