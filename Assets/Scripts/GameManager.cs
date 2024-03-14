@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     private int cyclesCompleted;
     private bool inExitDoor = false;
 
+    public int nextLevel;
+
     public void OpenDoor()
     {
         if(cyclesCompleted < 3)
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
         if(cyclesCompleted >= 3 && inExitDoor)
         {
             Debug.Log("You win!");
+            GameObject.FindWithTag("GameManager").GetComponent<GameSceneManager>().SelectLevel(nextLevel);
         }
     }
 

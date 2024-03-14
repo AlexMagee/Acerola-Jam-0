@@ -9,17 +9,26 @@ public class GameSceneManager : MonoBehaviour
     {
         switch (level)
         {
+            case 0:
+                SceneManager.LoadScene("Main Menu", LoadSceneMode.Single);
+                break;
             case 1:
                 SceneManager.LoadScene("1.1", LoadSceneMode.Single);
                 break;
             case 2:
-                SceneManager.LoadScene("1.2", LoadSceneMode.Single);
+                SceneManager.LoadScene("lvl2", LoadSceneMode.Single);
                 break;
             case 3:
-                SceneManager.LoadScene("1.3", LoadSceneMode.Single);
+                SceneManager.LoadScene("lvl3", LoadSceneMode.Single);
                 break;
             case 4:
-                SceneManager.LoadScene("1.4", LoadSceneMode.Single);
+                SceneManager.LoadScene("lvl4", LoadSceneMode.Single);
+                break;
+            case 5:
+                SceneManager.LoadScene("win", LoadSceneMode.Single);
+                break;
+            case 6:
+                SceneManager.LoadScene("credit", LoadSceneMode.Single);
                 break;
             default:
                 break;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1310918336555672895}
   - component: {fileID: 1986610150986167403}
+  - component: {fileID: 6528708324119530799}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -47,3 +48,15 @@ MonoBehaviour:
   door: {fileID: 0}
   cycleCountText: {fileID: 0}
   exitDoorBlocker: {fileID: 0}
+--- !u!114 &6528708324119530799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995479678090331412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f40fb1783cf3fad4386875be60db3cbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
